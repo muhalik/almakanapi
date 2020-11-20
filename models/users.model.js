@@ -8,8 +8,12 @@ const User = new Schema({
         unique: true,
         sparse: true
     },
-    name: {
-        type: String
+    mobile: {
+        type: String,
+        unique: true,
+    },
+    full_name:{
+        type:String
     },
     email: {
         type: String,
@@ -25,16 +29,8 @@ const User = new Schema({
     address: {
         type: String
     },
-    shop_name: {
-        type: String
-    },
-    city: {
-        type: String
-    },
+
     avatar: {
-        type: String
-    },
-    avatar_ext: {
         type: String
     },
 
