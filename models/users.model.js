@@ -29,6 +29,9 @@ const User = new Schema({
     address: {
         type: String
     },
+    entry_date:{
+        type:Date
+    },
 
     avatar: {
         type: String
