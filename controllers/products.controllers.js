@@ -2,6 +2,7 @@ const productsController = {};
 const Products = require("../models/products.model");
 const fs = require("fs");
 const cloudinary = require("../cloudinary");
+const bodyParser = require("body-parser");
 // fs.readdirSync(__dirname + "/models").forEach(function (file) {
 //   require(__dirname + "/models/" + file);
 // });
@@ -39,12 +40,10 @@ productsController.addProduct = async (req, res) => {
       fs.unlinkSync(imagepath);
     }
     var count = 0;
-    for (let index = 0; index < body.variations.length; index++) {
-      for (let k = 0; k < body.variations[index].image_link.length; k++) {
-        body.variations[index].image_link[k] = urls[count];
+      for (let k = 0; k < body.image_link.length; k++) {
+        body.image_link[k] = urls[count];
         count++;
       }
-    }
     const product = new Products(body);
 
     const result = await product.save();
