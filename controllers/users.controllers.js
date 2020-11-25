@@ -257,36 +257,34 @@ usersController.registerUser = async (req, res) => {
 // };
 
 // // Get Only vendors details
-// usersController.get_vendors = async (req, res) => {
-//   let user;
-
-//   try {
-//     user = await Users.paginate(
-//       {
-//         role: "vendor",
-//         status: "approved",
-//       },
-//       {
-//         limit: parseInt(req.query.limit),
-//         page: parseInt(req.query.page),
-//       }
-//     );
-//     if (user) {
-//       res.status(200).send({
-//         code: 200,
-//         message: "Successful",
-//         data: user,
-//       });
-//     } else {
-//       res.status(500).send({
-//         code: 500,
-//         message: "does not exits",
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(500).send(error);
-//   }
-// };
+usersController.get_vendors = async (req, res) => {
+  let user;
+  try {
+    user = await Users.paginate(
+      {
+        role: "vendor",
+      },
+      {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      }
+    );
+    if (user) {
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: user,
+      });
+    } else {
+      res.status(500).send({
+        code: 500,
+        message: "does not exits",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
 
 // // Get Restricted Vendor
 // usersController.get_restricted_vendors = async (req, res) => {
@@ -321,35 +319,34 @@ usersController.registerUser = async (req, res) => {
 // };
 
 // // Get Only customers details
-// usersController.get_customers = async (req, res) => {
-//   let user;
-//   try {
-//     user = await Users.paginate(
-//       {
-//         role: "customer",
-//         status: "approved",
-//       },
-//       {
-//         limit: parseInt(req.query.limit),
-//         page: parseInt(req.query.page),
-//       }
-//     );
-//     if (user) {
-//       res.status(200).send({
-//         code: 200,
-//         message: "Successful",
-//         data: user,
-//       });
-//     } else {
-//       res.status(500).send({
-//         code: 500,
-//         message: "does not exits",
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(500).send(error);
-//   }
-// };
+usersController.get_customers = async (req, res) => {
+  let user;
+  try {
+    user = await Users.paginate(
+      {
+        role: "customer",
+      },
+      {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      }
+    );
+    if (user) {
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: user,
+      });
+    } else {
+      res.status(500).send({
+        code: 500,
+        message: "does not exits",
+      });
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
 
 // // Get Restricted Customer
 // usersController.get_restricted_customers = async (req, res) => {

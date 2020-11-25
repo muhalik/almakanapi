@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const multer = require("multer");
 const server = http.createServer(app);
 require('dotenv').config();
 const errorHandler = require("./middleware/error-handler");
@@ -9,14 +10,38 @@ const accessControls = require("./middleware/access-controls");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser')
+
+const storage=multer.diskStorage({
+  destination:function(req,file,cb){
+    cb(null,'images/')
+  },
+  filename:function(req,file,cb){
+     cb(null,file.fieldname + '-' +  Date.now() + '-' + file.originalname);
+}
+});
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true)
+  } else {
+      //reject file
+      cb({message: 'Unsupported file format'}, false)
+  }
+}
+
+const upload =multer({
+  storage:storage,
+  fileFilter: fileFilter
+});
+
+
 app.use(
   bodyParser.urlencoded({
     extended: true
   })
 );
-
 app.use(bodyParser.json()); // to support JSON-encoded bodies
-
+app.use(upload.array('myImage'));
+app.use(express.static("public"));
 // Requiring Routes
 
 const UsersRoutes = require('./routes/users.routes');

@@ -60,6 +60,11 @@ const Product = new Schema({
           flat_no: { type: String },
         },
       ],
+      image_link: [
+        {
+          url: { type: String },
+        },
+      ],
     },
   ],
 
