@@ -28,6 +28,7 @@ productsController.getAll = async (req, res) => {
 
 productsController.addProduct = async (req, res) => {
   try {
+    const body = req.body;
     const urls = [];
     const uploader = async (path) => await cloudinary.uploads(path, "Images");
     const files = req.files;
@@ -44,7 +45,6 @@ productsController.addProduct = async (req, res) => {
         count++;
       }
     }
-    const body = req.body;
     const product = new Products(body);
 
     const result = await product.save();
