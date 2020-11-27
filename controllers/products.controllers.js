@@ -32,6 +32,7 @@ productsController.addProduct = async (req, res) => {
     const body = req.body;
     const urls = [];
     const uploader = async (path) => await cloudinary.uploads(path, "Images");
+    body.variations = JSON.parse(body.variations)
     const files = req.files;
     for (const file of files) {
       const imagepath = file.path;
@@ -39,11 +40,14 @@ productsController.addProduct = async (req, res) => {
       urls.push(newPath);
       fs.unlinkSync(imagepath);
     }
-    var count = 0;
-      for (let k = 0; k < body.image_link.length; k++) {
-        body.image_link[k] = urls[count];
-        count++;
-      }
+    // var count = 0;
+    // for (let k = 0; k < body.image_link.length; k++) {
+    //   body.image_link[k] = urls[count];
+    //   count++;
+    // }
+    body.image_link1=urls[0];
+    body.image_link2=urls[1];
+    body.image_link3=urls[2];
     const product = new Products(body);
 
     const result = await product.save();
@@ -59,16 +63,40 @@ productsController.addProduct = async (req, res) => {
   }
 };
 
+
 productsController.getSingleProduct = async (req, res) => {
   let product;
   try {
     const _id = req.params._id;
-    product = await products.findOne({ _id: _id });
+    product = await Products.findOne({ _id: _id });
     res.status(200).send({
       code: 200,
       message: "Successful",
       data: product,
     });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).send(error);
+  }
+};
+
+productsController.get_new_arrival = async (req, res) => {
+  try {
+      var datetime = new Date();
+      datetime.setMonth(datetime.getMonth() - 1);
+
+      let products = await Products.paginate(
+        {},
+        {
+          limit: parseInt(req.query.limit),
+          page: parseInt(req.query.page),
+        }
+      );
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: products,
+      });
   } catch (error) {
     console.log("error", error);
     return res.status(500).send(error);
@@ -2006,4 +2034,3 @@ module.exports = productsController;
 // };
 
 // module.exports = productsController;
-

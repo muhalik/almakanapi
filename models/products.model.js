@@ -39,6 +39,7 @@ const Product = new Schema({
   three_bed_price: {
     type: String,
   },
+  
   two_bed_length: {
     type: String,
   },
@@ -63,7 +64,17 @@ const Product = new Schema({
     },
   ],
 
-  image_link: [
+  image_link1: [
+    {
+      url: { type: String },
+    },
+  ],
+  image_link2: [
+    {
+      url: { type: String },
+    },
+  ],
+  image_link3: [
     {
       url: { type: String },
     },
@@ -72,9 +83,6 @@ const Product = new Schema({
     type: Date,
   },
 
-  isdeleted: {
-    type: Boolean,
-  },
 });
 
 Product.plugin(mongoosePaginate);
