@@ -9,13 +9,13 @@ const bodyParser = require("body-parser");
 productsController.getAll = async (req, res) => {
   let products;
   try {
-    let merged = {};
-    const start = 0;
-    const length = 100;
-    products = await Products.paginate(merged, {
-      offset: parseInt(start),
-      limit: parseInt(length),
-    });
+    let products = await Products.paginate(
+        {},
+        {
+          limit: parseInt(req.query.limit),
+          page: parseInt(req.query.page),
+        }
+      );
     res.status(200).send({
       code: 200,
       message: "Successful",
