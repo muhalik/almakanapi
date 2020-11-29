@@ -79,6 +79,15 @@ const Product = new Schema({
       url: { type: String },
     },
   ],
+
+  reviews: [
+    {
+      c_name: { type: String },
+      review: { type: String },
+      entry_date: { type: Date },
+    },
+  ],
+
   entry_date: {
     type: Date,
   },
