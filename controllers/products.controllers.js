@@ -15,7 +15,7 @@ productsController.add_review = async (req, res) => {
     const products = await Products.update(
       { _id: req.query._id },
       {
-        $push: { [`review`]: body },
+        $push: { [`reviews`]: body },
       }
     );
     res.status(200).send({
