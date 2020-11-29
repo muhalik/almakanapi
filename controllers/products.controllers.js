@@ -6,8 +6,25 @@ const bodyParser = require("body-parser");
 // fs.readdirSync(__dirname + "/models").forEach(function (file) {
 //   require(__dirname + "/models/" + file);
 // });
+
+productsController.add_review = async (req, res) => {
+  const body = req.body;
+  var datetime = new Date();
+  body.entry_date = datetime;
+
+    const products = await Products.update(
+      { _id: req.query._id },
+      {
+        $push: { [`review`]: body },
+      }
+    );
+    res.status(200).send({
+      code: 200,
+      message: "Thank You For Review",
+    });
+};
+
 productsController.getAll = async (req, res) => {
-  let products;
   try {
     let products = await Products.paginate(
         {},
@@ -394,250 +411,32 @@ module.exports = productsController;
 //   }
 // };
 
-// productsController.get_vendor_product_query_search = async (req, res) => {
-//   const startdate = req.query.start_date;
-//   const enddate = req.query.end_date + "T23:59:59Z";
+productsController.get_vendor_product_query_search = async (req, res) => {
 
-//   var ObjectId = mongoose.Types.ObjectId;
-//   const _id = new ObjectId(req.params._id);
+  var ObjectId = mongoose.Types.ObjectId;
+  const _id = new ObjectId(req.params._id);
 
-//   try {
-//     if (req.query.field === "category") {
-//       let query = {};
-//       query = await Categories.findOne({ label: req.query.q }, { _id: 1 });
-
-//       if (!query) {
-//         res.status(200).send({
-//           code: 200,
-//           data: [],
-//           total: 0,
-//         });
-//         return;
-//       } else {
-//         const total = await Products.countDocuments({
-//           vendor_id: _id,
-//           category: query._id,
-//           entry_date: {
-//             $gte: new Date(startdate),
-//             $lte: new Date(enddate),
-//           },
-//         });
-
-//         const products = await Products.aggregate([
-//           {
-//             $match: {
-//               vendor_id: _id,
-//               category: query._id,
-//               entry_date: {
-//                 $gte: new Date(startdate),
-//                 $lte: new Date(enddate),
-//               },
-//             },
-//           },
-//           {
-//             $lookup: {
-//               from: "categories",
-//               localField: "category",
-//               foreignField: "_id",
-//               as: "category",
-//             },
-//           },
-//           { $unwind: "$category" },
-//           {
-//             $lookup: {
-//               from: "sub_categories",
-//               localField: "sub_category",
-//               foreignField: "_id",
-//               as: "sub_category",
-//             },
-//           },
-//           { $unwind: "$sub_category" },
-//           {
-//             $skip: (req.query.page - 1) * req.query.limit,
-//           },
-//           {
-//             $limit: parseInt(req.query.limit),
-//           },
-//         ]);
-//         res.status(200).send({
-//           code: 200,
-//           message: "Successful",
-//           data: products,
-//           total,
-//         });
-//       }
-//     } else if (req.query.field === "sub-category") {
-//       let query = {};
-//       query = await Sub_categories.findOne({ label: req.query.q }, { _id: 1 });
-//       if (!query) {
-//         res.status(200).send({
-//           code: 200,
-//           data: [],
-//           total: 0,
-//         });
-//         return;
-//       } else {
-//         const total = await Products.countDocuments({
-//           vendor_id: _id,
-//           sub_category: query._id,
-//           entry_date: {
-//             $gte: new Date(startdate),
-//             $lte: new Date(enddate),
-//           },
-//         });
-//         const products = await Products.aggregate([
-//           {
-//             $match: {
-//               vendor_id: _id,
-//               sub_category: query._id,
-//               entry_date: {
-//                 $gte: new Date(startdate),
-//                 $lte: new Date(enddate),
-//               },
-//             },
-//           },
-//           {
-//             $lookup: {
-//               from: "categories",
-//               localField: "category",
-//               foreignField: "_id",
-//               as: "category",
-//             },
-//           },
-//           { $unwind: "$category" },
-//           {
-//             $lookup: {
-//               from: "sub_categories",
-//               localField: "sub_category",
-//               foreignField: "_id",
-//               as: "sub_category",
-//             },
-//           },
-//           { $unwind: "$sub_category" },
-//           {
-//             $skip: (req.query.page - 1) * req.query.limit,
-//           },
-//           {
-//             $limit: parseInt(req.query.limit),
-//           },
-//         ]);
-//         res.status(200).send({
-//           code: 200,
-//           message: "Successful",
-//           data: products,
-//           total,
-//         });
-//       }
-//     } else if (req.query.field === "_id") {
-//       var ObjectId = mongoose.Types.ObjectId;
-//       let id = 0;
-//       try {
-//         id = new ObjectId(req.query.q);
-//       } catch (err) {
-//         res.status(200).send({
-//           code: 200,
-//           message: "Successful",
-//           data: [],
-//           total: 0,
-//         });
-//         return;
-//       }
-//       const field = req.query.field;
-//       const search = {};
-//       search[field] = id;
-//       search["entry_date"] = {
-//         $gte: new Date(startdate),
-//         $lte: new Date(enddate),
-//       };
-//       search["vendor_id"] = _id;
-//       const total = await Products.countDocuments(search);
-//       const products = await Products.aggregate([
-//         {
-//           $match: search,
-//         },
-//         {
-//           $lookup: {
-//             from: "categories",
-//             localField: "category",
-//             foreignField: "_id",
-//             as: "category",
-//           },
-//         },
-//         { $unwind: "$category" },
-//         {
-//           $lookup: {
-//             from: "sub_categories",
-//             localField: "sub_category",
-//             foreignField: "_id",
-//             as: "sub_category",
-//           },
-//         },
-//         { $unwind: "$sub_category" },
-//         {
-//           $skip: (req.query.page - 1) * req.query.limit,
-//         },
-//         {
-//           $limit: parseInt(req.query.limit),
-//         },
-//       ]);
-//       res.status(200).send({
-//         code: 200,
-//         message: "Successful",
-//         data: products,
-//         total,
-//       });
-//     } else {
-//       const field = req.query.field;
-//       const search = {};
-//       search["vendor_id"] = _id;
-//       search[field] = req.query.q;
-//       search["entry_date"] = {
-//         $gte: new Date(startdate),
-//         $lte: new Date(enddate),
-//       };
-
-//       const total = await Products.countDocuments(search);
-//       const products = await Products.aggregate([
-//         {
-//           $match: search,
-//         },
-//         {
-//           $lookup: {
-//             from: "categories",
-//             localField: "category",
-//             foreignField: "_id",
-//             as: "category",
-//           },
-//         },
-//         { $unwind: "$category" },
-//         {
-//           $lookup: {
-//             from: "sub_categories",
-//             localField: "sub_category",
-//             foreignField: "_id",
-//             as: "sub_category",
-//           },
-//         },
-//         { $unwind: "$sub_category" },
-//         {
-//           $skip: (req.query.page - 1) * req.query.limit,
-//         },
-//         {
-//           $limit: parseInt(req.query.limit),
-//         },
-//       ]);
-//       res.status(200).send({
-//         code: 200,
-//         message: "Successful",
-//         data: products,
-//         total,
-//       });
-//     }
-//   } catch (error) {
-//     console.log("error", error);
-//     return res.status(500).send(error);
-//   }
-// };
+  const field=req.query.field;
+  const search={};
+  search[field]=req.query.q;
+  try {
+    let products = await Products.paginate(
+      search,
+      {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      }
+    );
+  res.status(200).send({
+    code: 200,
+    message: "Successful",
+    data: products,
+  });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).send(error);
+  }
+};
 
 // productsController.get_admin_products = async (req, res) => {
 //   console.log("id", req.query);
@@ -1295,7 +1094,7 @@ module.exports = productsController;
 // // },
 
 // //Get All Products of specific vendor endpoint definition
-// productsController.get_vendor_products = async (req, res) => {
+//  productsController.get_vendor_products = async (req, res) => {
 //   try {
 //     var ObjectId = mongoose.Types.ObjectId;
 //     const _id = new ObjectId(req.params._id);
