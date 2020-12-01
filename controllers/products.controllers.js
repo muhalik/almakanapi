@@ -429,8 +429,8 @@ module.exports = productsController;
 
 productsController.get_all_products_query_search = async (req, res) => {
 
-  var ObjectId = mongoose.Types.ObjectId;
-  const _id = new ObjectId(req.params._id);
+//   var ObjectId = mongoose.Types.ObjectId;
+//   const _id = new ObjectId(req.params._id);
 
   const field=req.query.field;
   const search={};
