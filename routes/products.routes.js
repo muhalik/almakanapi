@@ -13,8 +13,11 @@ router.get("/product-by-id/:_id", productController.getSingleProduct);
 
 // router.get("/abc/cde/vendor/user-products/:_id", productController.get_vendor_products);
 router.get("/user-products-query-search/:_id", productController.get_vendor_product_query_search);
+<<<<<<< HEAD
 
 router.get("/search/building-name/abc", productController.get_product_id);
+=======
+>>>>>>> e84125f03350b516684a420ed968d2962ed5aaa3
 
 // router.get("/products-all-count/:_id", productController.geteverything);
 // router.get("/search/abc", productController.get_search_products);
@@ -26,7 +29,11 @@ router.post("/add", productController.addProduct);
 
 
 router.put("/:_id", checkAuth, productController.updateProduct);
+<<<<<<< HEAD
 router.put("/review/abc", productController.add_review);
+=======
+router.put("/review", checkAuth, productController.add_review);
+>>>>>>> e84125f03350b516684a420ed968d2962ed5aaa3
 
 
 
