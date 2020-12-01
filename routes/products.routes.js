@@ -12,7 +12,7 @@ router.get("/product-by-id/:_id", productController.getSingleProduct);
 // router.get("/any/product-by-id/:_id", productController.get_all_product_by_id);
 
 // router.get("/abc/cde/vendor/user-products/:_id", productController.get_vendor_products);
-router.get("/user-products-query-search/:_id", productController.get_vendor_product_query_search);
+router.get("/all-products/query-search", productController.get_all_products_query_search);
 
 router.get("/search/building-name/abc", productController.get_product_id);
 // router.get("/products-all-count/:_id", productController.geteverything);
