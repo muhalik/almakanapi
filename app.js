@@ -46,6 +46,8 @@ app.use(express.static("public"));
 
 const UsersRoutes = require('./routes/users.routes');
 const ProductsRoutes = require('./routes/products.routes');
+const SlidersRoutes = require('./routes/sliders.routes');
+
 
 // connection to mongoose
 const mongoCon = process.env.mongoCon;
@@ -87,6 +89,8 @@ app.use(cors());
 // Routes which should handle requests
 app.use("/users", UsersRoutes);
 app.use("/products", ProductsRoutes);
+app.use("/sliders", SlidersRoutes);
+
 
 app.use(errorHandler);
 
