@@ -12,27 +12,27 @@ productsController.add_review = async (req, res) => {
   var datetime = new Date();
   body.entry_date = datetime;
 
-    const products = await Products.update(
-      { _id: req.query._id },
-      {
-        $push: { "reviews": body },
-      }
-    );
-    res.status(200).send({
-      code: 200,
-      message: "Thank You For Review",
-    });
+  const products = await Products.update(
+    { _id: req.query._id },
+    {
+      $push: { reviews: body },
+    }
+  );
+  res.status(200).send({
+    code: 200,
+    message: "Thank You For Review",
+  });
 };
 
 productsController.getAll = async (req, res) => {
   try {
     let products = await Products.paginate(
-        {},
-        {
-          limit: parseInt(req.query.limit),
-          page: parseInt(req.query.page),
-        }
-      );
+      {},
+      {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      }
+    );
     res.status(200).send({
       code: 200,
       message: "Successful",
@@ -49,7 +49,7 @@ productsController.addProduct = async (req, res) => {
     const body = req.body;
     const urls = [];
     const uploader = async (path) => await cloudinary.uploads(path, "Images");
-    body.variations = JSON.parse(body.variations)
+    body.variations = JSON.parse(body.variations);
     const files = req.files;
     for (const file of files) {
       const imagepath = file.path;
@@ -62,9 +62,9 @@ productsController.addProduct = async (req, res) => {
     //   body.image_link[k] = urls[count];
     //   count++;
     // }
-    body.image_link1=urls[0];
-    body.image_link2=urls[1];
-    body.image_link3=urls[2];
+    body.image_link1 = urls[0];
+    body.image_link2 = urls[1];
+    body.image_link3 = urls[2];
     const product = new Products(body);
 
     const result = await product.save();
@@ -79,7 +79,6 @@ productsController.addProduct = async (req, res) => {
       .send({ message: "Product Added Successfully", error });
   }
 };
-
 
 productsController.getSingleProduct = async (req, res) => {
   let product;
@@ -101,7 +100,10 @@ productsController.get_product_id = async (req, res) => {
   let product;
   try {
     const _id = req.params._id;
-    product = await Products.find({ building_name: req.query.building_name },{_id:1});
+    product = await Products.find(
+      { building_name: req.query.building_name },
+      { _id: 1, building_name: 1 }
+    );
     res.status(200).send({
       code: 200,
       message: "Successful",
@@ -115,21 +117,21 @@ productsController.get_product_id = async (req, res) => {
 
 productsController.get_new_arrival = async (req, res) => {
   try {
-      var datetime = new Date();
-      datetime.setMonth(datetime.getMonth() - 1);
+    var datetime = new Date();
+    datetime.setMonth(datetime.getMonth() - 1);
 
-      let products = await Products.paginate(
-        {},
-        {
-          limit: parseInt(req.query.limit),
-          page: parseInt(req.query.page),
-        }
-      );
-      res.status(200).send({
-        code: 200,
-        message: "Successful",
-        data: products,
-      });
+    let products = await Products.paginate(
+      {},
+      {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      }
+    );
+    res.status(200).send({
+      code: 200,
+      message: "Successful",
+      data: products,
+    });
   } catch (error) {
     console.log("error", error);
     return res.status(500).send(error);
@@ -252,7 +254,6 @@ async function runUpdateById(id, updates, res) {
 }
 
 module.exports = productsController;
-
 
 // const productsController = {};
 // const Products = require("../models/product.model");
@@ -427,27 +428,71 @@ module.exports = productsController;
 //   }
 // };
 
-productsController.get_vendor_product_query_search = async (req, res) => {
+productsController.get_all_products_query_search = async (req, res) => {
+  // var ObjectId = mongoose.Types.ObjectId;
+  // const _id = new ObjectId(req.params._id);
 
-  var ObjectId = mongoose.Types.ObjectId;
-  const _id = new ObjectId(req.params._id);
-
-  const field=req.query.field;
-  const search={};
-  search[field]=req.query.q;
+  const field = req.query.field;
+  const search = {};
+  search[field] = req.query.q;
   try {
-    let products = await Products.paginate(
-      search,
-      {
+    if (req.query.field === "_id") {
+      let products = await Products.paginate(search, {
         limit: parseInt(req.query.limit),
         page: parseInt(req.query.page),
-      }
-    );
-  res.status(200).send({
-    code: 200,
-    message: "Successful",
-    data: products,
-  });
+      });
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: products,
+      });
+    } else {
+      let products = await Products.paginate(search, {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      });
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: products,
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).send(error);
+  }
+};
+
+productsController.get_all_vendor_products_query_search = async (req, res) => {
+  // var ObjectId = mongoose.Types.ObjectId;
+  // const _id = new ObjectId(req.params._id);
+
+  const field = req.query.field;
+  const search = {};
+  search[field] = req.query.q;
+  search[user_id] = req.query._id;
+  try {
+    if (req.query.field === "_id") {
+      let products = await Products.paginate(search, {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      });
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: products,
+      });
+    } else {
+      let products = await Products.paginate(search, {
+        limit: parseInt(req.query.limit),
+        page: parseInt(req.query.page),
+      });
+      res.status(200).send({
+        code: 200,
+        message: "Successful",
+        data: products,
+      });
+    }
   } catch (error) {
     console.log("error", error);
     return res.status(500).send(error);
