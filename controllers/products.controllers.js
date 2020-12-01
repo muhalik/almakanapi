@@ -427,7 +427,7 @@ module.exports = productsController;
 //   }
 // };
 
-productsController.get_vendor_product_query_search = async (req, res) => {
+productsController.get_all_products_query_search = async (req, res) => {
 
   var ObjectId = mongoose.Types.ObjectId;
   const _id = new ObjectId(req.params._id);
