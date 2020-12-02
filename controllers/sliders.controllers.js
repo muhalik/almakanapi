@@ -25,6 +25,7 @@ slidersController.getAll = async (req, res) => {
 };
 
 slidersController.addSlider = async (req, res) => {
+  console.log("aaa");
   try {
     const body = req.body;
     const urls = [];
