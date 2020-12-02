@@ -6,7 +6,7 @@ const server = http.createServer(app);
 require('dotenv').config();
 const errorHandler = require("./middleware/error-handler");
 const errorMessage = require("./middleware/error-message");
-// const accessControls = require("./middleware/access-controls");
+const accessControls = require("./middleware/access-controls");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser')
@@ -84,7 +84,7 @@ app.get('/', function (req, res) {
 app.set('port', (process.env.PORT));
 
 // app.use(accessControls);
-app.use(cors());
+// app.use(cors());
 
 // Routes which should handle requests
 app.use("/users", UsersRoutes);
