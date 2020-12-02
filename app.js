@@ -83,8 +83,8 @@ app.get('/', function (req, res) {
 
 app.set('port', (process.env.PORT));
 
-// app.use(accessControls);
-// app.use(cors());
+app.use(accessControls);
+app.use(cors());
 
 // Routes which should handle requests
 app.use("/users", UsersRoutes);
