@@ -32,7 +32,7 @@ router.get("/:_id",UserController.getSingleUser);
 router.put("/user-status/:_id", checkAuth, UserController.update_status);
 router.put("/reset-password/:_id", UserController.reset_password);
 router.put("/add-to-cart/:_id", checkAuth, UserController.add_to_cart);
-router.put("/add-to-wishlist/:_id", checkAuth, UserController.add_to_wishlist);
+router.put("/add-to-wishlist/:_id", UserController.add_to_wishlist);
 router.put("/clear-cart-data-by-id/:_id", UserController.deleteCartData);
 router.put("/delete/user-wishlist/:_id", UserController.delete_wishlist_Data);
 router.put("/user-profile/:_id", UserController.update_profile);

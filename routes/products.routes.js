@@ -22,7 +22,6 @@ router.post("/add", productController.addProduct);
 
 router.put("/:_id", checkAuth, productController.updateProduct);
 router.put("/review/abc", productController.add_review);
-router.put("/review", checkAuth, productController.add_review);
 
 
 router.delete("/:_id", checkAuth, productController.deleteProduct);

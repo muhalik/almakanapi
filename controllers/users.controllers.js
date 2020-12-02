@@ -651,9 +651,6 @@ usersController.add_to_cart = async (req, res) => {
 
 usersController.add_to_wishlist= async (req, res) => {
   const body = req.body;
-  if (body.variation_id === "") {
-    body.variation_id = undefined;
-  }
   if (!req.params._id) {
     Fu;
     res.status(500).send({
@@ -664,7 +661,7 @@ usersController.add_to_wishlist= async (req, res) => {
     const user = await Users.update(
       { _id: req.params._id },
       {
-        $push: { ["wish_list"]: body },
+        $push: { wishlist: req.query },
       }
     );
     res.status(200).send({
@@ -763,14 +760,14 @@ usersController.delete_wishlist_Data = async (req, res) => {
   }
   try {
     const _id = req.params._id;
-    const object_id = req.query.object_id;
+    const object_id = req.query.p_id;
 
     const result = await Users.findOneAndUpdate(
       {
         _id: _id,
       },
       {
-        $pull: { wish_list: { _id: object_id } },
+        $pull: { wishlist: { p_id: object_id } },
       },
       { new: true }
     );
