@@ -99,9 +99,10 @@ productsController.getSingleProduct = async (req, res) => {
 productsController.get_product_id = async (req, res) => {
   let product;
   try {
+    const query = req.query.building_name;
     const _id = req.params._id;
     product = await Products.find(
-      { building_name: req.query.building_name },
+      { building_name: new RegExp(query, "i") },
       { _id: 1, building_name: 1 }
     );
     res.status(200).send({
