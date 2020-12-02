@@ -93,8 +93,11 @@ app.use("/sliders", SlidersRoutes);
 
 
 app.use(errorHandler);
-
 app.use(errorMessage);
+app.get("*", (req, res) => {
+  return handle(req, res);
+});
+app.set("port", process.env.PORT);
 
 server.listen(app.get('port'));
 console.log('listening on port', app.get('port'));
