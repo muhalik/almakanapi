@@ -1,5 +1,5 @@
 const slidersController = {};
-const Sliders = require("../models/products.model");
+const Sliders = require("../models/sliders.model");
 const fs = require("fs");
 const cloudinary = require("../cloudinary");
 const bodyParser = require("body-parser");
